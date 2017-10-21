@@ -1,0 +1,9 @@
+apiVersion: "mattmoor.io/v1"
+kind: Api
+metadata:
+  name: cloudbuild-api
+spec:
+  name: cloudbuild
+  version: v1
+  resources:
+  - Build

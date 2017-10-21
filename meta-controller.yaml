@@ -1,0 +1,17 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: meta-controller
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: meta-controller
+    spec:
+      containers:
+      - name: meta-controller
+        image: gcr.io/convoy-adapter/meta-controller:staging
+        env:
+          - name: API_IMAGE
+            value: gcr.io/convoy-adapter/api-controller:staging
