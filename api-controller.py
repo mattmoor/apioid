@@ -15,12 +15,11 @@ def main():
 
     crds = client.CustomObjectsApi()
 
+    # TODO(mattmoor): Share a library with the meta controller
     name = os.environ['API_NAME']
     domain = '%s.googleapis.com' % name
     version = os.environ['API_VERSION']
     resource = os.environ['API_RESOURCE']
-
-    # TODO(mattmoor): Share a library with the meta controller
     plural = resource.lower() + 's'
 
     creds = AppAssertionCredentials()
@@ -31,14 +30,23 @@ def main():
         logging.error("TODO call %s/%s %s on %s", name, version, resource,
                       json.dumps(obj, indent=1))
 
-    stream = watch.Watch().stream(
-        crds.list_cluster_custom_object, domain, version, plural)
-    for event in stream:
-        # TODO(mattmoor): Execute in a threadpool.
-        try:
-            call(event["object"])
-        except:
-            logging.exception("Error handling event")
+    resource_version = ''
+    while True:
+        stream = watch.Watch().stream(crds.list_cluster_custom_object,
+                                      domain, version, plural,
+                                      resource_version=resource_version)
+        for event in stream:
+            # TODO(mattmoor): Execute in a threadpool.
+            try:
+                obj = event["object"]
+                call(obj)
+
+                # Configure where to resume streaming.
+                metadata = obj.get("metadata")
+                if metadata:
+                    resource_version = metadata["resourceVersion"]
+            except:
+                logging.exception("Error handling event")
 
 if __name__ == "__main__":
     main()

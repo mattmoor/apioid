@@ -2,6 +2,10 @@ apiVersion: "mattmoor.io/v1"
 kind: Api
 metadata:
   name: cloudbuild-api
+  # Added by meta-controller
+  # annotations:
+  #   builds.cloudbuild.googleapis.com/controller-namespace: ...
+  #   builds.cloudbuild.googleapis.com/controller-deployment: ...
 spec:
   name: cloudbuild
   version: v1
