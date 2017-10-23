@@ -54,3 +54,8 @@ k8s_object(
     name = "example-api-crd",
     template = ":example-api.yaml",
 )
+
+k8s_object(
+    name = "example-build-crd",
+    template = ":example-build.yaml",
+)

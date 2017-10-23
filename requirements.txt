@@ -1,3 +1,3 @@
-kubernetes==3.0.0
+git+https://github.com/kubernetes-incubator/client-python.git
 google-api-python-client
 google-auth-httplib2

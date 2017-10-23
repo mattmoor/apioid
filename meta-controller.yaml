@@ -1,7 +1,7 @@
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: meta-controller
+  name: &name meta-controller
 spec:
   replicas: 1
   template:
@@ -13,9 +13,13 @@ spec:
       - name: meta-controller
         image: gcr.io/convoy-adapter/meta-controller:staging
         env:
+          - name: API_IMAGE
+            value: gcr.io/convoy-adapter/api-controller:staging
           - name: MY_NAMESPACE
             valueFrom:
               fieldRef:
                 fieldPath: metadata.namespace
-          - name: API_IMAGE
-            value: gcr.io/convoy-adapter/api-controller:staging
+
+          # We don't need the downward API, just YAML anchors/refs.
+          - name: OWNER_NAME
+            value: *name

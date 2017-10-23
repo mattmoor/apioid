@@ -16,11 +16,11 @@ def main():
     crds = client.CustomObjectsApi()
 
     # TODO(mattmoor): Share a library with the meta controller
-    name = os.environ['API_NAME']
-    domain = '%s.googleapis.com' % name
-    version = os.environ['API_VERSION']
-    resource = os.environ['API_RESOURCE']
-    plural = resource.lower() + 's'
+    name = os.environ["API_NAME"]
+    domain = "%s.googleapis.com" % name
+    version = os.environ["API_VERSION"]
+    resource = os.environ["API_RESOURCE"]
+    plural = resource.lower() + "s"
 
     creds = AppAssertionCredentials()
     api = discovery_build(name, version, credentials=creds)
@@ -30,7 +30,7 @@ def main():
         logging.error("TODO call %s/%s %s on %s", name, version, resource,
                       json.dumps(obj, indent=1))
 
-    resource_version = ''
+    resource_version = ""
     while True:
         stream = watch.Watch().stream(crds.list_cluster_custom_object,
                                       domain, version, plural,
